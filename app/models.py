@@ -26,12 +26,3 @@ class Salary(Base):
     )
     next_increase_date = mapped_column(DateTime, nullable=False)
     employee = relationship("User", back_populates='salary')
-    '''
-    __table_args__ = (
-        UniqueConstraint(
-            'employee_id', 
-            name='uc_salary_employee_id',
-            sqlite_on_conflict='REPLACE'),
-    )
-    '''
-

@@ -1,8 +1,8 @@
 """create tables
 
-Revision ID: 89b6db958b8d
+Revision ID: 8262f0da64cf
 Revises: 
-Create Date: 2023-06-04 17:43:26.186866
+Create Date: 2023-06-05 00:38:05.026922
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '89b6db958b8d'
+revision = '8262f0da64cf'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -31,12 +31,12 @@ def upgrade() -> None:
     )
     op.create_table('salary',
     sa.Column('salary', sa.Integer(), nullable=False),
-    sa.Column('employee_id', sa.Integer(), nullable=False),
+    sa.Column('employee_id', sa.Integer(), nullable=False, sqlite_on_conflict_unique='REPLACE'),
     sa.Column('next_increase_date', sa.DateTime(), nullable=False),
     sa.Column('id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['employee_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('employee_id', name='uc_salary_employee_id')
+    sa.UniqueConstraint('employee_id')
     )
     # ### end Alembic commands ###
 
