@@ -1,7 +1,8 @@
 """Роутеры для едпойнтов зарплаты."""
+from typing import Annotated
 from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
-from app import database, schemas
+from app import database as db, schemas, models
 from app.crud.crud import salary_crud
 from app.auth.authenticate import authenticate, check_superuser
 
@@ -14,9 +15,10 @@ router = APIRouter()
     response_model=list[schemas.Salary],
     dependencies=[Depends(check_superuser)])
 async def get_all_salaries(
-    session: database.AsyncSession = Depends(database.get_async_session),
+    session: Annotated[db.AsyncSession, Depends(db.get_async_session)],
 ) -> list[schemas.Salary]:
     return await salary_crud.get_all(session=session)
+
 
 @router.post(
     path='/',
@@ -25,7 +27,7 @@ async def get_all_salaries(
     dependencies=[Depends(check_superuser)])
 async def create_salary(
     new_salary: schemas.SalaryCreate,
-    session: database.AsyncSession = Depends(database.get_async_session),
+    session: Annotated[db.AsyncSession, Depends(db.get_async_session)],
 ) -> schemas.Salary:
     salary = await salary_crud.create(
         new_obj=new_salary,
@@ -38,12 +40,12 @@ async def create_salary(
     response_model=schemas.Salary,
     responses={404:{'model': schemas.ErrorNotFound}})
 async def get_salary(
-    session: database.AsyncSession = Depends(database.get_async_session),
-    user_id: int = Depends(authenticate)
+    session: Annotated[db.AsyncSession, Depends(db.get_async_session)],
+    user: Annotated[models.User, Depends(authenticate)]
 ) -> schemas.Salary:
     salary = await salary_crud.get_by_field(
         required_field='employee_id',
-        value=user_id,
+        value=user.id,
         session=session)
     if not salary:
         return JSONResponse(

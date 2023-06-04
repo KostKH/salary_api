@@ -21,7 +21,7 @@ class Salary(Base):
     next_increase_date = Column(DateTime)
     employee = relationship("User", back_populates='salary')
     __table_args__ = (
-        UniqueConstraint('employee_id', 'id', name='_emloyee_salary_uc'),
+        UniqueConstraint('employee_id', name='uc_salary_employee_id, '),
     )
 
 
