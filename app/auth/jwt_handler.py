@@ -1,26 +1,26 @@
 from datetime import datetime
 
-from app.config import Settings
 from fastapi import HTTPException, status
-from jose import jwt, JWTError
+from jose import JWTError, jwt
+
+from app.config import Settings
 
 settings = Settings()
 
 
-def create_access_token(user_id: int):
+def create_access_token(user_id: int) -> str:
     payload = {
         'user_id': user_id,
         'expires': datetime.now().timestamp() + settings.jwt_effect_seconds
     }
-    token = jwt.encode(
+    return jwt.encode(
         payload,
         settings.jwt_secret,
         algorithm=settings.jwt_algorithm
     )
-    return token
 
 
-def verify_access_token(token: str):
+def verify_access_token(token: str) -> dict:
     try:
         data = jwt.decode(
             token,
@@ -46,5 +46,3 @@ def verify_access_token(token: str):
             detail="Token expired!"
         )
     return data
-
-

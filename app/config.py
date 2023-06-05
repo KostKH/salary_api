@@ -1,8 +1,10 @@
-from pydantic import BaseSettings
-from dotenv import load_dotenv
 import os
 
+from dotenv import load_dotenv
+from pydantic import BaseSettings
+
 load_dotenv()
+
 
 class Settings(BaseSettings):
     app_title: str = 'Salary API'
@@ -12,5 +14,6 @@ class Settings(BaseSettings):
     jwt_secret: str = os.getenv('JWT_SECRET_KEY', 'some_key')
     jwt_algorithm: str = os.getenv('JWT_ALGORITHM', 'HS256')
     jwt_effect_seconds: int = int(os.getenv('JWT_EFFECT_SECONDS', 86400))
+
 
 settings = Settings()

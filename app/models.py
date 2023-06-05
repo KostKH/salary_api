@@ -1,8 +1,8 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime, UniqueConstraint
-from datetime import datetime
-from sqlalchemy.orm import relationship
+from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String
+from sqlalchemy.orm import mapped_column, relationship
+
 from .database import Base
-from sqlalchemy.orm import mapped_column
+
 
 class User(Base):
     username = mapped_column(String, nullable=False)
@@ -21,8 +21,7 @@ class Salary(Base):
         Integer,
         ForeignKey('user.id'),
         nullable=False,
-        unique=True, 
-        sqlite_on_conflict_unique='REPLACE'
-    )
+        unique=True,
+        sqlite_on_conflict_unique='REPLACE')
     next_increase_date = mapped_column(DateTime, nullable=False)
     employee = relationship("User", back_populates='salary')

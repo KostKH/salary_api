@@ -1,6 +1,7 @@
-from pydantic import BaseModel
 from datetime import datetime
-from typing_extensions import Literal
+
+from pydantic import BaseModel
+
 
 class UserBase(BaseModel):
     username: str
@@ -42,6 +43,7 @@ class Salary(SalaryBase):
 class TokenResponse(BaseModel):
     access_token: str
     token_type: str
+
 
 class ErrorNotFound(BaseModel):
     message: str = 'Запрошенные данные не найдены'

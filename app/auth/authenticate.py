@@ -1,15 +1,21 @@
 from typing import Annotated
-from .jwt_handler import verify_access_token
+
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
+
 from app import database, models
 from app.crud.crud import user_crud
+
+from .jwt_handler import verify_access_token
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/user/signin')
 
 
 async def authenticate(
-    session: Annotated[database.AsyncSession, Depends(database.get_async_session)],
-    token: Annotated[str, Depends(oauth2_scheme)]) -> models.User:
+    session: Annotated[database.AsyncSession,
+                       Depends(database.get_async_session)],
+    token: Annotated[str, Depends(oauth2_scheme)]
+) -> models.User:
     if not token:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,

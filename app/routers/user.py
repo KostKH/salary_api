@@ -1,15 +1,19 @@
 """Роутеры для едпойнтов юзера."""
 from typing import Annotated
+
 from fastapi import APIRouter, Depends, HTTPException, status
-from app import schemas, database as db
-from app.crud.crud import user_crud
-from app.auth.hash_password import HashPassword
 from fastapi.security import OAuth2PasswordRequestForm
-from app.auth.jwt_handler import verify_access_token, create_access_token
+
+from app import database as db
+from app import schemas
 from app.auth.authenticate import check_superuser
+from app.auth.hash_password import HashPassword
+from app.auth.jwt_handler import create_access_token
+from app.crud.crud import user_crud
 
 router = APIRouter()
 hash_password = HashPassword()
+
 
 @router.get(
     path='/',
@@ -34,10 +38,9 @@ async def create_user(
 ) -> schemas.User:
     hashed_password = hash_password.create_hash(new_user.password)
     new_user.password = hashed_password
-    created_user = await user_crud.create(
+    return await user_crud.create(
         new_obj=new_user,
         session=session)
-    return created_user
 
 
 @router.post(

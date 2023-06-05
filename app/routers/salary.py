@@ -1,10 +1,13 @@
 """Роутеры для едпойнтов зарплаты."""
 from typing import Annotated
+
 from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
-from app import database as db, schemas, models
-from app.crud.crud import salary_crud
+
+from app import database as db
+from app import models, schemas
 from app.auth.authenticate import authenticate, check_superuser
+from app.crud.crud import salary_crud
 
 router = APIRouter()
 
@@ -29,16 +32,16 @@ async def create_salary(
     new_salary: schemas.SalaryCreate,
     session: Annotated[db.AsyncSession, Depends(db.get_async_session)],
 ) -> schemas.Salary:
-    salary = await salary_crud.create(
+    return await salary_crud.create(
         new_obj=new_salary,
         session=session)
-    return salary
+
 
 @router.get(
     path='/me',
     summary='Посмотреть свою зарплату',
     response_model=schemas.Salary,
-    responses={404:{'model': schemas.ErrorNotFound}})
+    responses={404: {'model': schemas.ErrorNotFound}})
 async def get_salary(
     session: Annotated[db.AsyncSession, Depends(db.get_async_session)],
     user: Annotated[models.User, Depends(authenticate)]
@@ -50,5 +53,5 @@ async def get_salary(
     if not salary:
         return JSONResponse(
             status_code=status.HTTP_404_NOT_FOUND,
-            content={'message':'Данные о зарплате не найдены.'})
+            content={'message': 'Данные о зарплате не найдены.'})
     return salary

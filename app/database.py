@@ -1,16 +1,17 @@
-from sqlalchemy import Column, Integer
-from sqlalchemy.sql import text
+from sqlalchemy import Integer
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import declarative_base, declared_attr, sessionmaker
+from sqlalchemy.orm import (declarative_base, declared_attr, mapped_column,
+                            sessionmaker)
+from sqlalchemy.sql import text
 
 from .config import settings
-from sqlalchemy.orm import mapped_column
+
 
 class PreBase:
 
     @declared_attr
-    def __tablename__(cls):
-        return cls.__name__.lower()
+    def __tablename__(self):
+        return self.__name__.lower()
 
     id = mapped_column(Integer, primary_key=True)
 

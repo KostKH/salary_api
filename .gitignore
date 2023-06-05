@@ -160,3 +160,5 @@ cython_debug/
 #.idea/
 
 salary_db/salary.db
+reqs_actual.txt
+setup.cfg
