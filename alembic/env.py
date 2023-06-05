@@ -9,11 +9,12 @@ from sqlalchemy.ext.asyncio import AsyncEngine
 from alembic import context
 from app.models import Base
 
+
 load_dotenv('.env')
 config = context.config
 config.set_main_option(
     'sqlalchemy.url',
-    os.getenv('DATABASE_URL', 'sqlite+aiosqlite:///./salary.db')
+    os.getenv('DATABASE_URL', 'sqlite+aiosqlite:///salary_db/salary.db')
 )
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)

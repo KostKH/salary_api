@@ -26,7 +26,7 @@ async def get_all_users(
     path='/',
     summary='создание юзера',
     response_model=schemas.User,
-    # dependencies=[Depends(check_superuser)]
+    dependencies=[Depends(check_superuser)]
 )
 async def create_user(
     new_user: schemas.UserCreate,
