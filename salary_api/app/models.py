@@ -5,7 +5,7 @@ from .database import Base
 
 
 class User(Base):
-    username = mapped_column(String, nullable=False)
+    username = mapped_column(String, nullable=False, unique=True)
     password = mapped_column(String, nullable=False)
     name = mapped_column(String, nullable=False)
     surname = mapped_column(String, nullable=False)

@@ -4,3 +4,7 @@ sqlalchemy
 aiosqlite
 python-dotenv
 python-jose
+alembic
+passlib
+bcrypt
+python-multipart

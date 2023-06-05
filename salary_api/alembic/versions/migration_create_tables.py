@@ -1,16 +1,16 @@
 """create tables
 
-Revision ID: 8262f0da64cf
+Revision ID: af787624baeb
 Revises: 
-Create Date: 2023-06-05 00:38:05.026922
+Create Date: 2023-06-05 16:27:53.446408
 
 """
+from alembic import op
 import sqlalchemy as sa
 
-from alembic import op
 
 # revision identifiers, used by Alembic.
-revision = '8262f0da64cf'
+revision = 'af787624baeb'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -27,7 +27,8 @@ def upgrade() -> None:
     sa.Column('is_active', sa.Boolean(), nullable=True),
     sa.Column('is_superuser', sa.Boolean(), nullable=True),
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('username')
     )
     op.create_table('salary',
     sa.Column('salary', sa.Integer(), nullable=False),

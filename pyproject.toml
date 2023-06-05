@@ -1,13 +1,23 @@
 [tool.poetry]
 name = "salary-api"
 version = "0.1.0"
-description = ""
+description = "API для получения информации о своей зарплате"
 authors = ["Константин Харьков <stenkh@yandex.ru>"]
 readme = "README.md"
 packages = [{include = "salary_api"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
+fastapi = "^0.96.0"
+uvicorn = {extras = ["standard"], version = "^0.22.0"}
+sqlalchemy = "^2.0.15"
+aiosqlite = "^0.19.0"
+python-dotenv = "^1.0.0"
+python-jose = "^3.3.0"
+alembic = "^1.11.1"
+passlib = "^1.7.4"
+python-multipart = "^0.0.6"
+bcrypt = "^4.0.1"
 
 
 [build-system]
