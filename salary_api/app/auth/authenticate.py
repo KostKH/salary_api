@@ -25,10 +25,10 @@ async def authenticate(
     user = await user_crud.get(
         obj_id=decoded_token['user_id'],
         session=session)
-    if not user.is_active:
+    if not user or not user.is_active:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail=('Пользователь неактивен.'))
+            detail=('Пользователь не найден.'))
     return user
 
 
