@@ -32,11 +32,19 @@
 Для запуска в проект вложена конфигурация docker-compose. После запуска docker-compose API будет доступно по адресу: `http://<host address>:8000/`
 
 Необходимо выполнить следующие шаги:
-- Склонируйте репозиторий и перейдите в папку проекта, где расположен файл manage.py:
+- Склонируйте репозиторий с GitHub либо с Gitlab и перейдите в папку проекта, где расположен файл manage.py:
+
+Github:
 ```
 git clone https://github.com/KostKH/salary_api.git
 cd salary_api/infra/
 ```
+Gitlab:
+```
+git clone https://gitlab.com/KostKH/salary-api.git
+cd salary_api/infra/
+```
+
 - Проверьте, что свободен порт `8000`, необходимый для работы приложения
 
 - Проверьте, что на машине / сервере установлены `docker` и `docker compose`
