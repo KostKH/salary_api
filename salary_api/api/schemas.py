@@ -14,6 +14,7 @@ class UserBase(BaseModel):
     is_active: bool | None
     is_superuser: bool | None
 
+
 class UserCreate(UserBase):
     """Схема, используемая при создании пользователя"""
 

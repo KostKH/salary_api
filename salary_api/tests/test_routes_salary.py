@@ -1,5 +1,6 @@
 from datetime import datetime
 
+
 def test_salary_me(active_client, salaries_in_db):
     response = active_client.get('/v1/salary/me')
     assert response.status_code == 200, 'Неверный код ответа'
@@ -9,7 +10,7 @@ def test_salary_me(active_client, salaries_in_db):
 
     salary.pop('_sa_instance_state')
     salary['next_increase_date'] = datetime.strftime(
-        salary.get('next_increase_date'),'%Y-%m-%dT%H:%M:%S')
+        salary.get('next_increase_date'), '%Y-%m-%dT%H:%M:%S')
     expected_keys = sorted(list(salary.keys()))
     response_keys = sorted(list(data.keys()))
     assert expected_keys == response_keys, (
@@ -28,7 +29,6 @@ def test_salary_me_no_access(test_client, salaries_in_db):
     assert list(data.keys()) == ['detail'], 'Неверный ключ в ответе'
 
 
-
 def test_salary_get(superuser_client, salaries_in_db):
     response = superuser_client.get('/v1/salary/')
     assert response.status_code == 200, 'Неверный код ответа'
@@ -41,7 +41,7 @@ def test_salary_get(superuser_client, salaries_in_db):
     for idx, salary in enumerate(salary_list):
         salary.pop('_sa_instance_state')
         salary['next_increase_date'] = datetime.strftime(
-            salary.get('next_increase_date'),'%Y-%m-%dT%H:%M:%S')
+            salary.get('next_increase_date'), '%Y-%m-%dT%H:%M:%S')
         expected_keys = sorted(list(salary.keys()))
         response_keys = sorted(list(data[idx].keys()))
         assert expected_keys == response_keys, (
@@ -92,7 +92,9 @@ def test_salary_post_correct_data(superuser_client, salaries_in_db):
     data_keys = sorted(list(data.keys()))
     assert expected_keys == data_keys, 'Неверные ключи в ответе'
     for key in expected_keys:
-        assert data[key] == new_salary[key], 'Неверные значения ключей в ответе'
+        assert data[key] == new_salary[key], (
+            'Неверные значения ключей в ответе')
+
 
 def test_users_post_incorrect_data(superuser_client, salaries_in_db):
     new_salary = {
@@ -100,7 +102,7 @@ def test_users_post_incorrect_data(superuser_client, salaries_in_db):
         'employee_id': 3,
         'next_increase_date': '2023-10-01T00:00:00',
     }
-    required_keys = ['salary','employee_id','next_increase_date']
+    required_keys = ['salary', 'employee_id', 'next_increase_date']
     for key in required_keys:
         salary = new_salary.copy()
         salary.pop(key)
@@ -110,4 +112,3 @@ def test_users_post_incorrect_data(superuser_client, salaries_in_db):
         data = response.json()
         assert response.status_code == 422, 'Неверный код ответа'
         assert list(data.keys()) == ['detail'], 'Неверные ключи в ответе'
-

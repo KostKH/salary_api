@@ -1,23 +1,21 @@
 from datetime import datetime
 from pathlib import Path
-from sqlalchemy.sql import text
-from fastapi import HTTPException, status
+
 import pytest
 import pytest_asyncio
+from fastapi import HTTPException, status
 from fastapi.testclient import TestClient
-
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.sql import text
 
-from api.models import User, Salary
-from main import app
-from api.database import Base, get_async_session
 from api.auth.authenticate import authenticate, check_superuser
 from api.auth.hash_password import HashPassword
 from api.auth.jwt_handler import create_access_token
-from api.schemas import UserCreate, SalaryCreate
-from api.crud.crud import user_crud
-
+from api.database import Base, get_async_session
+from api.models import Salary, User
+from api.schemas import SalaryCreate, UserCreate
+from main import app
 
 BASE_DIR = Path('.').absolute()
 APP_DIR = BASE_DIR
@@ -31,8 +29,9 @@ engine = create_async_engine(
 )
 
 TestingSessionLocal = sessionmaker(
-    class_=AsyncSession, autocommit=False, autoflush=False, bind=engine,
-)
+    class_=AsyncSession, autocommit=False, autoflush=False, bind=engine)
+
+
 async def override_get_async_session():
     async with TestingSessionLocal() as session:
         await session.execute(text('PRAGMA foreign_keys = ON'))
@@ -45,9 +44,9 @@ async def init_db():
         await conn.run_sync(Base.metadata.create_all)
     yield
     async with engine.begin() as conn:
-       await conn.run_sync(Base.metadata.drop_all)
+        await conn.run_sync(Base.metadata.drop_all)
 
-    
+
 password_handler = HashPassword()
 password_hash = password_handler.create_hash('testpassword123')
 
@@ -94,6 +93,8 @@ salaries = [
         'next_increase_date': datetime(2023, 11, 1)
     },
 ]
+
+
 async def create_user(userdata):
     async with TestingSessionLocal() as session:
         await session.execute(text('PRAGMA foreign_keys = ON'))
@@ -106,6 +107,7 @@ async def create_user(userdata):
         token = create_access_token(user.id)
         return user, token
 
+
 @pytest_asyncio.fixture
 async def create_users():
     tempusers = {}
@@ -113,6 +115,7 @@ async def create_users():
     tempusers['active_user'] = await create_user(active_user)
     tempusers['inactive_user'] = await create_user(inactive_user)
     return tempusers
+
 
 @pytest_asyncio.fixture
 async def salaries_in_db(create_users):
@@ -129,11 +132,14 @@ async def salaries_in_db(create_users):
             created_salary.append(salary.__dict__.copy())
         return created_salary, create_users
 
+
 def override_failed_auth():
     raise HTTPException(
         status_code=status.HTTP_403_FORBIDDEN,
         detail=('Для получения доступа авторизуйтейсь '
                 'и добавьте токен в запрос.'))
+
+
 @pytest.fixture
 def superuser_client():
     app.dependency_overrides = {}
@@ -159,5 +165,3 @@ def test_client():
     app.dependency_overrides[authenticate] = override_failed_auth
     with TestClient(app) as client:
         yield client
-
-

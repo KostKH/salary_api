@@ -1,6 +1,6 @@
 async def test_users_signin(superuser_client, create_users):
     response = superuser_client.post(
-        '/v1/user/signin', 
+        '/v1/user/signin',
         headers={
             'accept': 'application/json',
             'Content-Type': 'application/x-www-form-urlencoded'},
@@ -14,7 +14,7 @@ async def test_users_signin(superuser_client, create_users):
 
 def test_users_singin_invalid_pass(superuser_client, create_users):
     response = superuser_client.post(
-        '/v1/user/signin', 
+        '/v1/user/signin',
         headers={
             'accept': 'application/json',
             'Content-Type': 'application/x-www-form-urlencoded'},
@@ -24,6 +24,7 @@ def test_users_singin_invalid_pass(superuser_client, create_users):
     data = response.json()
     assert data == {'detail': 'Введен неверный пароль.'}, (
         'Неверное тело ответа')
+
 
 def test_users_get(superuser_client, create_users):
     response = superuser_client.get('/v1/user/')
@@ -45,13 +46,14 @@ def test_users_get(superuser_client, create_users):
                 f'{user["username"]}, {key}: значение в ответе '
                 'отличается от ожидаемого')
 
+
 def test_users_get_post_no_access(test_client, active_client, create_users):
     new_user = {
         'username': 'User1001',
         'password': 'Testpass125',
-        'name': 'Виктор1', 
-        'surname': 'Тестовый1001', 
-        'job_title': 'Работник1001', 
+        'name': 'Виктор1',
+        'surname': 'Тестовый1001',
+        'job_title': 'Работник1001',
     }
     for client in (active_client, test_client):
 
@@ -71,18 +73,18 @@ def test_users_post_correct_data(superuser_client, create_users):
     new_user1 = {
         'username': 'User1000',
         'password': 'Testpass124',
-        'name': 'Виктор', 
-        'surname': 'Тестовый1000', 
-        'job_title': 'Работник1000', 
-        'is_superuser': True, 
+        'name': 'Виктор',
+        'surname': 'Тестовый1000',
+        'job_title': 'Работник1000',
+        'is_superuser': True,
         'is_active': True
     }
     new_user2 = {
         'username': 'User1001',
         'password': 'Testpass125',
-        'name': 'Виктор1', 
-        'surname': 'Тестовый1001', 
-        'job_title': 'Работник1001', 
+        'name': 'Виктор1',
+        'surname': 'Тестовый1001',
+        'job_title': 'Работник1001',
     }
     for user in (new_user1, new_user2):
         response = superuser_client.post(
@@ -104,15 +106,16 @@ def test_users_post_correct_data(superuser_client, create_users):
         for key in expected_keys:
             assert data[key] == user[key], 'Неверные значения ключей в ответе'
 
+
 def test_users_post_incorrect_data(superuser_client, create_users):
     new_user = {
         'username': 'User1001',
         'password': 'Testpass125',
-        'name': 'Виктор1', 
-        'surname': 'Тестовый1001', 
-        'job_title': 'Работник1001', 
+        'name': 'Виктор1',
+        'surname': 'Тестовый1001',
+        'job_title': 'Работник1001',
     }
-    required_keys = ['username','password','name','surname','job_title']
+    required_keys = ['username', 'password', 'name', 'surname', 'job_title']
     for key in required_keys:
         user = new_user.copy()
         user.pop(key)
