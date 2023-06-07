@@ -12,8 +12,8 @@ UpdateSchemaType = TypeVar('UpdateSchemaType', bound=schemas.BaseModel)
 
 
 class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
-    """Базовый класс с операциями CRUD.
-    """
+    """Базовый класс с операциями CRUD."""
+
     def __init__(
         self,
         model: Type[ModelType]
@@ -25,14 +25,14 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         obj_id: int,
         session: database.AsyncSession
     ) -> ModelType | None:
-        """Получает объект из БД по `id`."""
+        """Метод получает объект из БД по `id`."""
         return await session.get(self.model, obj_id)
 
     async def get_all(
         self,
         session: database.AsyncSession
     ) -> list[ModelType]:
-        """Получает все объекты из запрошенной таблицы."""
+        """Метод получает все объекты из запрошенной таблицы."""
         objects = await session.scalars(select(self.model))
         return objects.all()
 
@@ -43,7 +43,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         session: database.AsyncSession,
         one_obj: bool = True
     ) -> ModelType | list[ModelType]:
-        """Находит объекты по значению указанного поля."""
+        """Метод находит объекты по значению указанного поля."""
         field = getattr(self.model, required_field, None)
         if field is None:
             raise AttributeError(
@@ -60,7 +60,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         new_obj: CreateSchemaType,
         session: database.AsyncSession,
     ) -> ModelType:
-        """Создаёт запись в БД."""
+        """Метод создаёт запись в БД."""
         new_obj = new_obj.dict()
         new_obj = self.model(**new_obj)
         session.add(new_obj)
@@ -74,7 +74,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         session: database.AsyncSession,
         update_data: UpdateSchemaType,
     ) -> ModelType:
-        """Обновляет запись указанного объекта в БД."""
+        """Метод обновляет запись указанного объекта в БД."""
         obj_data = jsonable_encoder(obj)
         update_data = update_data.dict(exclude_unset=True)
         for field in obj_data:
@@ -89,7 +89,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         obj: database.Base,
         session: database.AsyncSession
     ) -> ModelType:
-        """Удаляет запись из БД."""
+        """Метод удаляет запись из БД."""
         await session.delete(obj)
         await session.commit()
         return obj

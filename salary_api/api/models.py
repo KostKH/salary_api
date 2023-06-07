@@ -5,6 +5,7 @@ from .database import Base
 
 
 class User(Base):
+    """Модель Алхимии к таблице user в БД."""
     username = mapped_column(String, nullable=False, unique=True)
     password = mapped_column(String, nullable=False)
     name = mapped_column(String, nullable=False)
@@ -16,6 +17,8 @@ class User(Base):
 
 
 class Salary(Base):
+    """Модель Алхимии к таблице salary в БД."""
+
     salary = mapped_column(Integer, nullable=False)
     employee_id = mapped_column(
         Integer,

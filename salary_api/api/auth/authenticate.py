@@ -16,6 +16,11 @@ async def authenticate(
                        Depends(database.get_async_session)],
     token: Annotated[str, Depends(oauth2_scheme)]
 ) -> models.User:
+    """Функция для обработки переданного на эндпойнт токена. Функция
+    проверяет токен на валидность и срок действия, затем по user_id
+    проверяет наличие пользователя в базе данных и его статус (пользователь
+    должен быть активен, не отключен). Если проверки пройдены - функция
+    возвращает объект пользователя из БД."""
     if not token:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -35,6 +40,9 @@ async def authenticate(
 async def check_superuser(
     user: Annotated[models.User, Depends(authenticate)]
 ) -> bool:
+    """Функция получет объект пользователя из БД с помощью функции
+    аутентификации и проверяет, является ли пользователь
+    суперпользователем"""
     if not user.is_superuser:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
                             detail='Недостаточно прав для операции')

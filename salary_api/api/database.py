@@ -22,6 +22,7 @@ AsyncSessionLocal = sessionmaker(engine, class_=AsyncSession)
 
 
 async def get_async_session():
+    """Функция для генерации сессий к БД."""
     async with AsyncSessionLocal() as async_session:
         await async_session.execute(text('PRAGMA foreign_keys = ON'))
         yield async_session

@@ -9,6 +9,9 @@ settings = Settings()
 
 
 def create_access_token(user_id: int) -> str:
+    """Функция для создания токена на основе user_id и секрета, заданного
+    в настройках. Токен действителен в течение указанного в настройках
+    кол-ва секунд."""
     payload = {
         'user_id': user_id,
         'expires': datetime.now().timestamp() + settings.jwt_effect_seconds
@@ -21,6 +24,9 @@ def create_access_token(user_id: int) -> str:
 
 
 def verify_access_token(token: str) -> dict:
+    """Функция проверяет на валидность переданный в неё токен.
+    В случае успешной валидации функция возвращает расшифрованный
+    словарь, содержащий user_id и дату окончания срока действия."""
     try:
         data = jwt.decode(
             token,
