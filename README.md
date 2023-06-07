@@ -59,11 +59,11 @@ JWT_EFFECT_SECONDS=86400
 ```
 - Установите и запустите приложение в контейнере. (Возможно, вам придется добавить `sudo` перед текстом команды в этом и следующем шагах):
 ```
-docker-compose up -d
+docker compose up -d
 ```
 - Запустите миграции:
 ```
-docker-compose exec salari.api alembic upgrade head
+docker compose exec salary_api alembic upgrade head
 ```
 
 ## Использование API
