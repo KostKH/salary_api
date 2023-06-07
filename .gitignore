@@ -160,4 +160,5 @@ cython_debug/
 #.idea/
 
 salary.db
+test.db
 setup.cfg

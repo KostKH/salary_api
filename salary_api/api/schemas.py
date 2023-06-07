@@ -8,7 +8,8 @@ class UserBase(BaseModel):
     name: str
     surname: str
     job_title: str
-
+    is_active: bool | None
+    is_superuser: bool | None
 
 class UserCreate(UserBase):
     password: str

@@ -4,12 +4,12 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 
-from app import database as db
-from app import schemas
-from app.auth.authenticate import check_superuser
-from app.auth.hash_password import HashPassword
-from app.auth.jwt_handler import create_access_token
-from app.crud.crud import user_crud
+from api import database as db
+from api import schemas
+from api.auth.authenticate import check_superuser
+from api.auth.hash_password import HashPassword
+from api.auth.jwt_handler import create_access_token
+from api.crud.crud import user_crud
 
 router = APIRouter()
 hash_password = HashPassword()

@@ -3,8 +3,8 @@ from typing import Annotated
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 
-from app import database, models
-from app.crud.crud import user_crud
+from api import database, models
+from api.crud.crud import user_crud
 
 from .jwt_handler import verify_access_token
 

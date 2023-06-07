@@ -3,7 +3,7 @@ from datetime import datetime
 from fastapi import HTTPException, status
 from jose import JWTError, jwt
 
-from app.config import Settings
+from api.config import Settings
 
 settings = Settings()
 

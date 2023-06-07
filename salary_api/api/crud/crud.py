@@ -1,4 +1,4 @@
-from app.models import Salary, User
+from api.models import Salary, User
 
 from .base import CRUDBase
 

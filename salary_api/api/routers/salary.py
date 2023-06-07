@@ -4,10 +4,10 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
 
-from app import database as db
-from app import models, schemas
-from app.auth.authenticate import authenticate, check_superuser
-from app.crud.crud import salary_crud
+from api import database as db
+from api import models, schemas
+from api.auth.authenticate import authenticate, check_superuser
+from api.crud.crud import salary_crud
 
 router = APIRouter()
 

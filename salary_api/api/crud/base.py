@@ -4,7 +4,7 @@ from typing import Any, Generic, Type, TypeVar
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy import select
 
-from app import database, schemas
+from api import database, schemas
 
 ModelType = TypeVar('ModelType', bound=database.Base)
 CreateSchemaType = TypeVar('CreateSchemaType', bound=schemas.BaseModel)
