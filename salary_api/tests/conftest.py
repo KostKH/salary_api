@@ -21,8 +21,6 @@ from api.crud.crud import user_crud
 
 BASE_DIR = Path('.').absolute()
 APP_DIR = BASE_DIR
-with open('1.txt', 'w') as f:
-    f.write(f"'basedir:' {BASE_DIR}, 'appdir:' {APP_DIR}")
 TEST_DB_PATH = APP_DIR / 'salary_db/test.db'
 SQLALCHEMY_DATABASE_URL = f'sqlite+aiosqlite:///{TEST_DB_PATH}'
 
